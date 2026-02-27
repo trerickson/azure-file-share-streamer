@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+}
+
+group 'org.appian.community.azurefileshare'
+version '1.1.0'
+
+// Lock to MS-11 to prevent the "Major Version 69" error from coming back
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    // Your Appian SDK dependency (might look slightly different depending on your setup)
+    compileOnly 'com.appian:appian-plug-in-sdk:24.4'
+
+    // Add this new line for the Logger
+    compileOnly 'log4j:log4j:1.2.17'
+
+    // Your Azure dependencies
+    implementation 'com.azure:azure-storage-file-share:12.21.0'
+    implementation 'com.azure:azure-core-http-netty:1.13.11'
+}
+
+// Ensure your plugin doesn't crash Appian's system logs
+configurations.all {
+    exclude group: 'org.slf4j'
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from sourceSets.main.allSource
+
+    // The Appian Standard: Safely bundle the Azure libraries inside META-INF/lib
+    into('META-INF/lib') {
+        from configurations.runtimeClasspath
+    }
+}
