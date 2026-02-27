@@ -9,5 +9,6 @@
     <smart-service name="Azure File Share Streamer"
                    key="AzureLargeFileUploader"
                    class="org.appian.community.azurefileshare.AzureLargeFileUploader">
+        <i18n-bundle>org.appian.community.azurestreamer.AzureLargeFileUploader</i18n-bundle>
     </smart-service>
 </appian-plugin>
