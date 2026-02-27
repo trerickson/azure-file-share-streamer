@@ -23,30 +23,34 @@ dependencies {
     // Main Azure library
     implementation 'com.azure:azure-storage-file-share:12.21.0'
 
-    // 1. FINAL FIX: Reactor Netty (Fixes CVE-2025-22227)
-    implementation 'io.projectreactor.netty:reactor-netty-http:1.1.22'
-    implementation 'io.projectreactor.netty:reactor-netty-core:1.1.22'
+    // --- FEBRUARY 2026 "IRON-CLAD" SECURITY OVERRIDES ---
+    // Using unified variables to prevent redeclaration errors
+    def secureNetty = '4.1.131.Final'
+    def secureReactor = '1.2.15'
+    def secureJackson = '2.18.2'
 
-    // 2. PREVIOUS FIX: Netty Core Modules
-    def nettyVersion = '4.1.118.Final'
-    implementation "io.netty:netty-common:${nettyVersion}"
-    implementation "io.netty:netty-handler:${nettyVersion}"
-    implementation "io.netty:netty-codec:${nettyVersion}"
-    implementation "io.netty:netty-codec-http:${nettyVersion}"
-    implementation "io.netty:netty-codec-http2:${nettyVersion}"
-    implementation "io.netty:netty-buffer:${nettyVersion}"
-    implementation "io.netty:netty-transport:${nettyVersion}"
+    // 1. Reactor Netty (Patched for CVE-2025-22227)
+    implementation "io.projectreactor.netty:reactor-netty-http:${secureReactor}"
+    implementation "io.projectreactor.netty:reactor-netty-core:${secureReactor}"
 
-    // 3. PREVIOUS FIX: Jackson Data Modules
-    def jacksonVersion = '2.17.2'
-    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
-}
+    // 2. Netty Core (Patched for CVE-2025-67735, 58056, 55163)
+    implementation "io.netty:netty-common:${secureNetty}"
+    implementation "io.netty:netty-handler:${secureNetty}"
+    implementation "io.netty:netty-codec:${secureNetty}"
+    implementation "io.netty:netty-codec-http:${secureNetty}"
+    implementation "io.netty:netty-codec-http2:${secureNetty}"
+    implementation "io.netty:netty-buffer:${secureNetty}"
+    implementation "io.netty:netty-transport:${secureNetty}"
+    implementation "io.netty:netty-resolver:${secureNetty}"
+    implementation "io.netty:netty-tcnative-classes:2.0.70.Final"
 
-// Ensure your plugin doesn't crash Appian's system logs
-configurations.all {
-    exclude group: 'org.slf4j'
+    // 3. Jackson Data Modules (Stable LTS)
+    implementation "com.fasterxml.jackson.core:jackson-core:${secureJackson}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${secureJackson}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${secureJackson}"
+
+    // Stable Azure-Netty bridge
+    implementation 'com.azure:azure-core-http-netty:1.13.11'
 }
 
 jar {
