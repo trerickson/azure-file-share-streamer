@@ -17,15 +17,31 @@ repositories {
 }
 
 dependencies {
-    // Your Appian SDK dependency (might look slightly different depending on your setup)
     compileOnly 'com.appian:appian-plug-in-sdk:24.4'
-
-    // Add this new line for the Logger
     compileOnly 'log4j:log4j:1.2.17'
 
-    // Your Azure dependencies
+    // Main Azure library
     implementation 'com.azure:azure-storage-file-share:12.21.0'
-    implementation 'com.azure:azure-core-http-netty:1.13.11'
+
+    // 1. FINAL FIX: Reactor Netty (Fixes CVE-2025-22227)
+    implementation 'io.projectreactor.netty:reactor-netty-http:1.1.22'
+    implementation 'io.projectreactor.netty:reactor-netty-core:1.1.22'
+
+    // 2. PREVIOUS FIX: Netty Core Modules
+    def nettyVersion = '4.1.118.Final'
+    implementation "io.netty:netty-common:${nettyVersion}"
+    implementation "io.netty:netty-handler:${nettyVersion}"
+    implementation "io.netty:netty-codec:${nettyVersion}"
+    implementation "io.netty:netty-codec-http:${nettyVersion}"
+    implementation "io.netty:netty-codec-http2:${nettyVersion}"
+    implementation "io.netty:netty-buffer:${nettyVersion}"
+    implementation "io.netty:netty-transport:${nettyVersion}"
+
+    // 3. PREVIOUS FIX: Jackson Data Modules
+    def jacksonVersion = '2.17.2'
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
 }
 
 // Ensure your plugin doesn't crash Appian's system logs

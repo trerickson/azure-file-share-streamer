@@ -1,0 +1,10 @@
+Azure File Share Streamer
+Copyright (c) 2024 Tate Erickson
+
+This product includes software developed by the following third parties:
+
+- Azure SDK for Java (MIT License)
+- Netty Project (Apache License 2.0)
+- Jackson Data Processor (Apache License 2.0)
+- Project Glassfish JAXB (CDDL-1.1 & GPL-2.0-with-classpath-exception)
+- Reactive Streams (CC0-1.0)
