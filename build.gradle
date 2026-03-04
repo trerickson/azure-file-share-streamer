@@ -16,6 +16,16 @@ repositories {
     }
 }
 
+// THIS BLOCK FIXES THE LINKAGE ERROR
+configurations.all {
+    // Exclude SLF4J and other logging bridges because Appian provides them.
+    // This prevents the "loader constraint violation" you saw in the logs.
+    exclude group: 'org.slf4j', module: 'slf4j-api'
+    exclude group: 'org.slf4j', module: 'jcl-over-slf4j'
+    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    exclude group: 'commons-logging', module: 'commons-logging'
+}
+
 dependencies {
     compileOnly 'com.appian:appian-plug-in-sdk:24.4'
     compileOnly 'log4j:log4j:1.2.17'
@@ -24,7 +34,6 @@ dependencies {
     implementation 'com.azure:azure-storage-file-share:12.21.0'
 
     // --- FEBRUARY 2026 "IRON-CLAD" SECURITY OVERRIDES ---
-    // Using unified variables to prevent redeclaration errors
     def secureNetty = '4.1.131.Final'
     def secureReactor = '1.2.15'
     def secureJackson = '2.18.2'
@@ -56,9 +65,10 @@ dependencies {
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
+    // AppMarket requirement: Include source code in the JAR
     from sourceSets.main.allSource
 
-    // The Appian Standard: Safely bundle the Azure libraries inside META-INF/lib
+    // Safely bundle the Azure/Netty/Jackson libraries inside META-INF/lib
     into('META-INF/lib') {
         from configurations.runtimeClasspath
     }
