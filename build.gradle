@@ -36,7 +36,7 @@ dependencies {
     // --- FEBRUARY 2026 "IRON-CLAD" SECURITY OVERRIDES ---
     def secureNetty = '4.1.131.Final'
     def secureReactor = '1.2.15'
-    def secureJackson = '2.18.2'
+    def secureJackson = '2.18.6'
 
     // 1. Reactor Netty (Patched for CVE-2025-22227)
     implementation "io.projectreactor.netty:reactor-netty-http:${secureReactor}"
