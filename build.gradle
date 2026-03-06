@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.appian.community.azurefileshare'
-version '1.1.0'
+version '1.0.0'
 
 // Lock to MS-11 to prevent the "Major Version 69" error from coming back
 sourceCompatibility = '11'

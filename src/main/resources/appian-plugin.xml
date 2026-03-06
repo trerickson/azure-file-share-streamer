@@ -2,7 +2,7 @@
     <plugin-info>
         <description>Uploads large files to Azure File Share using chunked streaming to bypass the 4MB REST API limit.</description>
         <vendor name="Appian Community" url="https://community.appian.com" />
-        <version>1.1.0</version>
+        <version>1.0.0</version>
         <application-version min="24.4" />
     </plugin-info>
 
